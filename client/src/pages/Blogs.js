@@ -128,7 +128,15 @@ const Blogs = () => {
                         value={newPhoto}
                         onChange={handleChange}
                     />
-                    <Button variant="contained" color="primary" sx={{color:"#ffffff"}} onClick={handleSubmit}>Post Blog</Button>
+                    <Button 
+                        variant="contained" 
+                        color="primary" 
+                        sx={{color:"#ffffff"}} 
+                        onClick={handleSubmit}
+                        disabled={(newTitle.trim() == "" || newContent.trim() == "" || newPhoto.trim() == "")}
+                    >
+                        Post Blog
+                    </Button>
                 </Form>
             </Dialog>
         )

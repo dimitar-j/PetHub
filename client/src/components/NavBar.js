@@ -15,6 +15,7 @@ const Container = styled("div")({
 
 const NavButton = styled(Button)({
   color: "#0F1020",
+  fontFamily: "Montserrat, sans-serif",
   backgroundColor: "#F0F8FF",
   transition: "0.25s",
   "&:hover": {

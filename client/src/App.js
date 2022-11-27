@@ -9,6 +9,7 @@ import Services from './pages/Services';
 import LogIn from './pages/LogIn'
 import { ThemeProvider } from '@emotion/react';
 import BlogPage from './pages/BlogPage';
+import MyServices from './pages/MyServices';
 
 const theme = createTheme({
   palette: {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/blogs/:name" element={<BlogPage/>}/>
             <Route path="/marketplace" element={<Marketplace/>}/>
             <Route path="/services" element={<Services/>}/>
+            <Route path="/myservices" element={<MyServices/>}/>
           </Routes>
         </BrowserRouter>
       </div>
