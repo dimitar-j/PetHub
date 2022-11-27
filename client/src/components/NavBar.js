@@ -9,7 +9,9 @@ const Container = styled("div")({
   width: "100%",
   justifyContent: "space-around",
   paddingTop: "20px",
+  backgroundColor:"#F0F8FF",
   position: "absolute",
+  paddingBottom:"20px"
 });
 
 const NavButton = styled(Button)({
@@ -36,7 +38,7 @@ const Icon = styled('img')({
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   if (loggedIn) {
     return (
       <Container>
