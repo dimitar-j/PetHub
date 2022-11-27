@@ -14,7 +14,6 @@ const Wrapper = styled('div')({
     flexDirection:"column",
     paddingLeft:"20%",
     paddingRight:"20%",
-    position:"relative"
 })
 
 const Header = styled('div')({
