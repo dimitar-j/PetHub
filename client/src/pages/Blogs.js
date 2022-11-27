@@ -48,13 +48,19 @@ const Form = styled('div')({
 
 const blogs = [
     {
-        "name": "How to Train Your Dog to Sit"
+        "name": "How to Train Your Dog to Sit",
+        "content": "asdfwkejf asdfkjwe fkjwqfke wkjef qke f asdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke f",
+        "photo":"https://www.wikihow.com/images/thumb/a/a0/Teach-Your-Dog-to-Sit-Step-9-Version-3.jpg/550px-nowatermark-Teach-Your-Dog-to-Sit-Step-9-Version-3.jpg"
     },
     {
-        "name": "Picking the Right Food for Your Puppy"
+        "name": "Picking the Right Food for Your Puppy",
+        "content": "qwefkbh23 fj3h4 fkjerhv9w fwjehfv92 qwefkbh23 fj3h4 fkjerhv9w fwjehfv92 qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92 qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92",
+        "photo": "https://www.coxwellvet.com/wp-content/uploads/sites/237/2022/03/dog-food-1100x650.jpg"
     },
     {
-        "name": "How Often Should You Wash Your Dog"
+        "name": "How Often Should You Wash Your Dog",
+        "content": "qwjkefhiu2ui2 werf wekrjv3 vekiwrjv wkehfvihw kjvh skjdhf vqjehr vskjdhfv ekjhv jehf vkjsher kjvh skdfjhv ejkrhv skdjhfv keh kwejhr fvkjsh vkj hs krjvhes rjkhv sdjhv skdjhf vkejsfh vkjehr fvkjshr vkjsh ervkjshe rkvjh sekjhv eksrjhv skjdfhv ekjrhv ksjhrv ",
+        "photo": "https://www.akc.org/wp-content/uploads/2018/05/chowchow-in-bath-at-groomers.jpg"
     },
 ]
 

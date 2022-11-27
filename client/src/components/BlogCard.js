@@ -25,7 +25,7 @@ const BlogCard = (props) => {
 
     const handleClick = () => {
         const name = props.content["name"].toLowerCase().replaceAll(" ","-");
-        navigate(`/blogs/${name}`)
+        navigate(`/blogs/${name}`, {state:props.content})
     }
 
     return (
