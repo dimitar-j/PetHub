@@ -13,10 +13,11 @@ const Page = styled('div')({
 const Container = styled('div')({
   display:"flex",
   width:"100%",
-  height:"100%",
   justifyContent:"center",
   alignItems:"center",
-  gap:"50px"
+  gap:"50px",
+  position:"relative",
+  top:"25%"
 })
 
 const TextContainer = styled('div')({

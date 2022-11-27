@@ -10,7 +10,6 @@ const Container = styled("div")({
   justifyContent: "space-around",
   paddingTop: "20px",
   backgroundColor:"#F0F8FF",
-  position: "absolute",
   paddingBottom:"20px"
 });
 
@@ -21,7 +20,6 @@ const NavButton = styled(Button)({
   "&:hover": {
     backgroundColor: "#F0F8FF",
     textDecoration: "underline",
-    transform: "scale(1.025)",
   },
 });
 
