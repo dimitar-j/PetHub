@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { styled } from '@mui/system';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,7 +10,12 @@ const Container = styled('div')({
     borderRadius:"12px",
     display:"flex",
     padding:"25px",
-    alignItems:"center"
+    alignItems:"center",
+    transition:"0.1s",
+    "&:hover": {
+        cursor:"pointer",
+        transform:"scale(1.01)"
+      },
 })
 
 const Title = styled('Div')({
