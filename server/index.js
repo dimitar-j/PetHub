@@ -4,16 +4,17 @@ const mysql = require("mysql");
 const cors = require("cors");
 const multer = require('multer');
 const path = require('path');
+const { profile } = require("console");
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static("./public"));
 
 const db = mysql.createConnection({
-  user: "root",
-  host: "localhost",
-  password: "password",
-  database: "db",
+  user: "admin",
+  host: "database-1.cqrcinzwgvqv.us-west-2.rds.amazonaws.com",
+  port: "61785",
+  database: "cpsc471",
 });
 
 var storage = multer.diskStorage({
@@ -56,14 +57,21 @@ app.delete("/delete/:id", (req, res) => {
 });
 
 app.post("/create-user", (req, res) => {
-  // req.body
+  var username = req.body.username;
+  var password = req.body.password;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
+  var birthday = req.body.birthday;
+  var address = req.body.address;
+  var profile_photo = req.body.profile_photo;
   db.query(
-    "INSERT INTO table (col1, col2, col3, col4) VALUES (?,?,?,?)",
-    [col1, col2, col3, col4],
+    "INSERT INTO users (username, password, fname, lname, birthday, address, profile_photo) VALUES (?,?,?,?,?,?,?)",
+    [username, password, fname, lname, birthday, address, profile_photo],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(result);
         res.send(result);
       }
     }

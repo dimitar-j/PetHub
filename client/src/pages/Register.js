@@ -57,18 +57,18 @@ const Register = () => {
 
   const handleSubmit = () => {
     const data = {
-      email: email,
+      username: email,
       password: password,
-      firstName: firstName,
-      lastName: lastName,
+      fname: firstName,
+      lname: lastName,
       address: address,
       birthday: birthday,
-      pfLink: pfLink,
+      profile_photo: pfLink,
     }
     console.log(data)
-    // Axios.post("http://localhost:3001/create-user", data).then((res) => {
-    //   console.log(res);
-    // });
+    Axios.post("http://localhost:3001/create-user", data).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
