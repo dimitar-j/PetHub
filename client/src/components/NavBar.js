@@ -37,7 +37,7 @@ const Icon = styled('img')({
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   if (loggedIn) {
     return (
       <Container>
