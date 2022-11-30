@@ -3,10 +3,6 @@ import NavBar from "../components/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
-import ItemCard from "../components/ItemCard";
-import Dialog from "@mui/material/Dialog";
-import { DialogTitle } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import CasualServiceCard from "../components/CasualServiceCard";
 import VetCard from "../components/VetCard";
 import AnimalCard from "../components/AnimalCard";
@@ -135,12 +131,27 @@ const animals = [
 ];
 
 const Services = () => {
+  const isServiceProvider = true;
+  const navigate = useNavigate();
+
   return (
     <>
       <NavBar></NavBar>
       <Wrapper>
         <Header>
           <Title>Services</Title>
+          {isServiceProvider && (
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ color: "#ffffff" }}
+              onClick={() => {
+                navigate("/myservices");
+              }}
+            >
+              My Services
+            </Button>
+          )}
         </Header>
         <SubTitle>Casual Services</SubTitle>
         <Table>
