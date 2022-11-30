@@ -68,7 +68,6 @@ const VetCard = (props) => {
   };
 
   const renderReview = (review) => {
-    console.log(review);
     return (
       <div>
         <Body>{review.review}</Body>

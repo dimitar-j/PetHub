@@ -59,7 +59,6 @@ const AnimalCard = (props) => {
   const [review, setReivew] = useState("");
 
   const renderReview = (review) => {
-    console.log(review);
     return (
       <div>
         <Body>{review.review}</Body>

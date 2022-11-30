@@ -60,7 +60,6 @@ const CasualServiceCard = (props) => {
   const [review, setReivew] = useState("");
 
   const renderReview = (review) => {
-    console.log(review);
     return (
       <div>
         <Body>{review.review}</Body>
@@ -89,7 +88,6 @@ const CasualServiceCard = (props) => {
           <Body>${props.content["price"]}</Body>
           <Body>Rating: {props.content["rating"]}/5</Body>
           <Body>Provided by: {props.content["providerName"]}</Body>
-          <Body>Location: {props.content["location"]}</Body>
           <Body>
             <a href={`mailto: ${props.content["providerEmail"]}`}>
               {props.content["providerEmail"]}

@@ -53,7 +53,6 @@ const casualServices = [
     description: "I will walk your dog around forest lawn for 1 hour a week",
     providerEmail: "jason.nguyen@gmail.com",
     providerName: "Jason Nguyen",
-    location: "NE Calgary",
     price: 25,
     rating: 4.7,
     reviews: [
@@ -72,7 +71,6 @@ const casualServices = [
     description: "I will walk your cat around forest lawn for 1 hour a week",
     providerEmail: "jason.nguyen@gmail.com",
     providerName: "Jason Nguyen",
-    location: "NE Calgary",
     price: 35,
     rating: 4.7,
     reviews: [
