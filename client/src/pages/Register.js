@@ -5,6 +5,8 @@ import Axios from "axios";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const Wrapper = styled("div")({
   width: "100%",
@@ -42,6 +44,8 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [birthday, setBirthday] = useState("");
   const [pfLink, setPfLink] = useState("");
+  const [isServiceProvider, setIsServiceProvider] = useState(false);
+  const [location, setLocation] = useState("");
 
   const validForm = () => {
     return (
@@ -51,7 +55,8 @@ const Register = () => {
       lastName != "" &&
       address != "" &&
       birthday != "" &&
-      pfLink != ""
+      pfLink != "" &&
+      (isServiceProvider ? location !== "" : true)
     );
   };
 
@@ -64,8 +69,10 @@ const Register = () => {
       address: address,
       birthday: birthday,
       profile_photo: pfLink,
-    }
-    console.log(data)
+      location,
+      isServiceProvider,
+    };
+    console.log(data);
     Axios.post("http://localhost:3001/create-user", data).then((res) => {
       console.log(res);
     });
@@ -131,7 +138,30 @@ const Register = () => {
             label="Profile Photo Link"
             variant="outlined"
           />
-          <SubmitButton variant="contained" disabled={!validForm()} onClick={handleSubmit}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={isServiceProvider}
+                onChange={(event) => setIsServiceProvider(event.target.checked)}
+              />
+            }
+            labelPlacement="start"
+            label="Service Provider"
+          />
+          {isServiceProvider && (
+            <TextField
+              value={location}
+              onChange={(event) => setLocation(event.target.value)}
+              id="Location"
+              label="Location"
+              variant="outlined"
+            />
+          )}
+          <SubmitButton
+            variant="contained"
+            disabled={!validForm()}
+            onClick={handleSubmit}
+          >
             CREATE ACCOUNT
           </SubmitButton>
         </FormContainer>
