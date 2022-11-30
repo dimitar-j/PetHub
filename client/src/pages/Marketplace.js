@@ -27,6 +27,7 @@ const Title = styled("div")({
   fontFamily: "Kaushan Script, cursive",
   color: "#76BCFF",
   fontSize: "52px",
+  fontWeight: "800",
 });
 
 const Table = styled("div")({
@@ -144,7 +145,7 @@ const Marketplace = () => {
     );
   };
   return (
-    <div>
+    <>
       <NavBar></NavBar>
       <Wrapper>
         <Header>
@@ -167,7 +168,7 @@ const Marketplace = () => {
         </Table>
       </Wrapper>
       {renderDialog()}
-    </div>
+    </>
   );
 };
 

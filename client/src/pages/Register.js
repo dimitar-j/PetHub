@@ -32,6 +32,7 @@ const Title = styled("div")({
   fontFamily: "Kaushan Script, cursive",
   color: "#76BCFF",
   fontSize: "48px",
+  fontWeight: "800",
 });
 
 const Register = () => {

@@ -40,22 +40,9 @@ const Body = styled("div")({
 
 const Subtitle = styled("div")({
   fontFamily: "Montserrat, sans-serif",
-  color: "rgba(0,0,0,0.5)",
+  color: "#0F1020",
   fontWeight: "300",
   fontSize: "16px",
-});
-
-const CategoryText = styled("div")({
-  fontFamily: "Montserrat, sans-serif",
-  color: "black",
-  fontWeight: "100",
-  fontSize: "16px",
-  fontStyle: "italic",
-});
-
-const SubContainer = styled("div")({
-  display: "flex",
-  gap: "15px",
 });
 
 const Content = styled("div")({
@@ -65,9 +52,20 @@ const Content = styled("div")({
   gap: "20px",
 });
 
-const ItemCard = (props) => {
-  const navigate = useNavigate();
+const AnimalCard = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
+
+  const renderReview = (review) => {
+    console.log(review);
+    return (
+      <div>
+        <Body>{review.review}</Body>
+        <Subtitle style={{ fontSize: "14px", fontStyle: "italic" }}>
+          {review.author}
+        </Subtitle>
+      </div>
+    );
+  };
 
   const handleClick = () => {
     setOpenDialog(true);
@@ -81,12 +79,22 @@ const ItemCard = (props) => {
         </DialogTitle>
         <Content>
           <Body>${props.content["price"]}</Body>
+          <Body>Rating: {props.content["rating"]}/5</Body>
+          <Body>Provided by: {props.content["providerName"]}</Body>
+          <Body>Location: {props.content["location"]}</Body>
           <Body>
-            <a href={`mailto: ${props.content["sellerEmail"]}`}>
-              {props.content["sellerEmail"]}
+            <a href={`mailto: ${props.content["providerEmail"]}`}>
+              {props.content["providerEmail"]}
             </a>
           </Body>
+          <Body>Breed: {props.content["breed"]}</Body>
+          <img src={props.content["image"]}></img>
           <Body>{props.content["description"]}</Body>
+          <Body sx={{ fontWeight: "600" }}>Reviews</Body>
+          {props.content["reviews"].map((review) => renderReview(review))}
+          {props.content["reviews"].length === 0 && (
+            <Subtitle>No reviews yet</Subtitle>
+          )}
         </Content>
       </Dialog>
     );
@@ -96,14 +104,11 @@ const ItemCard = (props) => {
     <>
       <Container onClick={handleClick}>
         <Title>{props.content["title"]}</Title>
-        <SubContainer>
-          <Subtitle>${props.content["price"].toFixed(2)}</Subtitle>
-          <CategoryText>{props.content["category"]}</CategoryText>
-        </SubContainer>
+        <Subtitle>${props.content["price"].toFixed(2)}</Subtitle>
       </Container>
       {renderDialog()}
     </>
   );
 };
 
-export default ItemCard;
+export default AnimalCard;
