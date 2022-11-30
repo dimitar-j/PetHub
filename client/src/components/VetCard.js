@@ -3,6 +3,8 @@ import { styled } from "@mui/system";
 import { Link, useNavigate } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const Container = styled("div")({
   boxShadow:
@@ -55,10 +57,16 @@ const Content = styled("div")({
 const VetCard = (props) => {
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
+  const [review, setReivew] = useState("");
 
   const handleClick = () => {
     setOpenDialog(true);
   };
+
+  const handleReviewsubmit = () => {
+    console.log(review);
+  };
+
   const renderReview = (review) => {
     console.log(review);
     return (
@@ -80,6 +88,24 @@ const VetCard = (props) => {
           <Body>Rating: {props.content["rating"]}/5</Body>
           <Body>Location: {props.content["location"]}</Body>
           <Body sx={{ fontWeight: "600" }}>Reviews</Body>
+          <TextField
+            label="Add Review"
+            multiline
+            rows={2}
+            variant="standard"
+            value={review}
+            onChange={(event) => setReivew(event.target.value)}
+          />
+          <Button
+            variant="contained"
+            sx={{
+              color: "#FFFFFF",
+            }}
+            disabled={review.trim() == ""}
+            onClick={handleReviewsubmit}
+          >
+            Post
+          </Button>
           {props.content["reviews"].map((review) => renderReview(review))}
           {props.content["reviews"].length === 0 && (
             <Subtitle>No reviews yet</Subtitle>

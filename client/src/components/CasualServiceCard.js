@@ -3,6 +3,8 @@ import { styled } from "@mui/system";
 import { Link, useNavigate } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const Container = styled("div")({
   boxShadow:
@@ -55,6 +57,7 @@ const Content = styled("div")({
 const CasualServiceCard = (props) => {
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
+  const [review, setReivew] = useState("");
 
   const renderReview = (review) => {
     console.log(review);
@@ -70,6 +73,10 @@ const CasualServiceCard = (props) => {
 
   const handleClick = () => {
     setOpenDialog(true);
+  };
+
+  const handleReviewsubmit = () => {
+    console.log(review);
   };
 
   const renderDialog = () => {
@@ -90,6 +97,24 @@ const CasualServiceCard = (props) => {
           </Body>
           <Body>{props.content["description"]}</Body>
           <Body sx={{ fontWeight: "600" }}>Reviews</Body>
+          <TextField
+            label="Add Review"
+            multiline
+            rows={2}
+            variant="standard"
+            value={review}
+            onChange={(event) => setReivew(event.target.value)}
+          />
+          <Button
+            variant="contained"
+            sx={{
+              color: "#FFFFFF",
+            }}
+            disabled={review.trim() == ""}
+            onClick={handleReviewsubmit}
+          >
+            Post
+          </Button>
           {props.content["reviews"].map((review) => renderReview(review))}
           {props.content["reviews"].length === 0 && (
             <Subtitle>No reviews yet</Subtitle>

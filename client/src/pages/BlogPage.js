@@ -75,7 +75,6 @@ const BlogPage = () => {
         <Body>{location.state.content}</Body>
         <Subtitle>Comments</Subtitle>
         <TextField
-          id="standard-multiline-static"
           label="Add Comment"
           multiline
           rows={2}
