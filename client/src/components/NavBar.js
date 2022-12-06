@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import Logo from "../assets/logo.png";
+import { UserContext } from "../context/UserContext";
 
 const Container = styled("div")({
   display: "flex",
@@ -37,8 +38,9 @@ const Icon = styled("img")({
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(true);
-  if (loggedIn) {
+  const { user, setUser } = useContext(UserContext);
+
+  if (user) {
     return (
       <Container>
         <Icon src={Logo} width="50px" onClick={() => navigate("/")}></Icon>
