@@ -38,7 +38,7 @@ const Icon = styled("img")({
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const { user, setUser } = useUserAuth();
+  const { user, logout } = useUserAuth();
 
   if (user) {
     return (
@@ -53,6 +53,9 @@ const NavBar = (props) => {
           </NavButton>
           <NavButton variant="text" onClick={() => navigate("/marketplace")}>
             Marketplace
+          </NavButton>
+          <NavButton variant="text" onClick={() => logout()}>
+            Log Out
           </NavButton>
         </TextContainer>
       </Container>

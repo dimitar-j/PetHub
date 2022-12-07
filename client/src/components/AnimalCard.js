@@ -5,6 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Rating from '@mui/material/Rating';
 
 const Container = styled("div")({
   boxShadow:
@@ -57,6 +58,7 @@ const Content = styled("div")({
 const AnimalCard = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [review, setReivew] = useState("");
+  const [rating, setRating] = useState(null);
 
   const renderReview = (review) => {
     return (
@@ -74,7 +76,11 @@ const AnimalCard = (props) => {
   };
 
   const handleReviewsubmit = () => {
-    console.log(review);
+    const data = {
+      review,
+      rating
+    }
+    console.log(data);
   };
 
   const renderDialog = () => {
@@ -105,12 +111,19 @@ const AnimalCard = (props) => {
             value={review}
             onChange={(event) => setReivew(event.target.value)}
           />
+          <Rating
+            name="Rating"
+            value={rating}
+            onChange={(event, newValue) => {
+              setRating(newValue);
+            }}
+          />
           <Button
             variant="contained"
             sx={{
               color: "#FFFFFF",
             }}
-            disabled={review.trim() == ""}
+            disabled={review.trim() == "" || rating === null}
             onClick={handleReviewsubmit}
           >
             Post
