@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { styled } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Rating from '@mui/material/Rating';
+import Rating from "@mui/material/Rating";
 
 const Container = styled("div")({
   boxShadow:
@@ -78,8 +77,8 @@ const AnimalCard = (props) => {
   const handleReviewsubmit = () => {
     const data = {
       review,
-      rating
-    }
+      rating,
+    };
     console.log(data);
   };
 
@@ -100,7 +99,7 @@ const AnimalCard = (props) => {
             </a>
           </Body>
           <Body>Breed: {props.content["breed"]}</Body>
-          <img src={props.content["image"]}></img>
+          <img src={props.content["image"]} alt="animal"></img>
           <Body>{props.content["description"]}</Body>
           <Body sx={{ fontWeight: "600" }}>Reviews</Body>
           <TextField
@@ -123,7 +122,7 @@ const AnimalCard = (props) => {
             sx={{
               color: "#FFFFFF",
             }}
-            disabled={review.trim() == "" || rating === null}
+            disabled={review.trim() === "" || rating === null}
             onClick={handleReviewsubmit}
           >
             Post

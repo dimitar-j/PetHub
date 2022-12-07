@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createTheme } from "@mui/material/styles";
 import Register from "./pages/Register";
@@ -26,8 +26,6 @@ const theme = createTheme({
 });
 
 function App() {
-  const [user, setUser] = useState(null);
-
   return (
     <ThemeProvider theme={theme}>
       <div>

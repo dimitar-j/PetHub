@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar";
-import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import BlogCard from "../components/BlogCard";
@@ -61,15 +60,17 @@ const Blogs = () => {
       content: newContent,
       photo: newPhoto,
     };
-    axios.post("http://localhost:3001/create-blog", {
-      data
-    }).then((response) => {
-      getBlogs();
-      setNewTitle("");
-      setNewContent("");
-      setNewPhoto("");
-      setOpenDialog(false);
-    });
+    axios
+      .post("http://localhost:3001/create-blog", {
+        data,
+      })
+      .then((response) => {
+        getBlogs();
+        setNewTitle("");
+        setNewContent("");
+        setNewPhoto("");
+        setOpenDialog(false);
+      });
   };
 
   const getBlogs = () => {
@@ -84,13 +85,13 @@ const Blogs = () => {
   }, []);
 
   const handleChange = (event) => {
-    if (event.target.id == "title") {
+    if (event.target.id === "title") {
       setNewTitle(event.target.value);
     }
-    if (event.target.id == "content") {
+    if (event.target.id === "content") {
       setNewContent(event.target.value);
     }
-    if (event.target.id == "photo") {
+    if (event.target.id === "photo") {
       setNewPhoto(event.target.value);
     }
   };
@@ -135,9 +136,9 @@ const Blogs = () => {
             sx={{ color: "#ffffff" }}
             onClick={handleSubmit}
             disabled={
-              newTitle.trim() == "" ||
-              newContent.trim() == "" ||
-              newPhoto.trim() == ""
+              newTitle.trim() === "" ||
+              newContent.trim() === "" ||
+              newPhoto.trim() === ""
             }
           >
             Post Blog
