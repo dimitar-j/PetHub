@@ -59,19 +59,19 @@ const Services = () => {
 
   const getCasualServices = () => {
     axios.get("http://localhost:3001/get-casualservices").then((response) => {
-      console.log(response.data);
+      setCasualServices(response.data);
     });
   };
 
   const getVets = () => {
     axios.get("http://localhost:3001/get-vets").then((response) => {
-      console.log(response.data);
+      setVets(response.data);
     });
   };
 
   const getAnimals = () => {
     axios.get("http://localhost:3001/get-animals").then((response) => {
-      console.log(response.data);
+      setAnimals(response.data);
     });
   };
 

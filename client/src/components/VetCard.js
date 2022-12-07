@@ -115,12 +115,12 @@ const VetCard = (props) => {
           >
             Post
           </Button>
-          {props.content["reviews"].map((review, index) =>
+          {/* {props.content["reviews"].map((review, index) =>
             renderReview(review, index)
           )}
           {props.content["reviews"].length === 0 && (
             <Subtitle>No reviews yet</Subtitle>
-          )}
+          )} */}
         </Content>
       </Dialog>
     );

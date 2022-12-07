@@ -82,6 +82,8 @@ const AnimalCard = (props) => {
     console.log(data);
   };
 
+
+
   const renderDialog = () => {
     return (
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
@@ -127,10 +129,10 @@ const AnimalCard = (props) => {
           >
             Post
           </Button>
-          {props.content["reviews"].map((review) => renderReview(review))}
+          {/* {props.content["reviews"].map((review) => renderReview(review))}
           {props.content["reviews"].length === 0 && (
             <Subtitle>No reviews yet</Subtitle>
-          )}
+          )} */}
         </Content>
       </Dialog>
     );
@@ -140,7 +142,7 @@ const AnimalCard = (props) => {
     <>
       <Container onClick={handleClick}>
         <Title>{props.content["title"]}</Title>
-        <Subtitle>${props.content["price"].toFixed(2)}</Subtitle>
+        <Subtitle>${parseInt(props.content["price"]).toFixed(2)}</Subtitle>
       </Container>
       {renderDialog()}
     </>

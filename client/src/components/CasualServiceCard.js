@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/system";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
+import axios from "axios";
+import userEvent from "@testing-library/user-event";
+import { useUserAuth } from "../context/UserContext";
 
 const Container = styled("div")({
   boxShadow:
@@ -56,14 +59,18 @@ const Content = styled("div")({
 
 const CasualServiceCard = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [review, setReivew] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [overallRating, setOverallRating] = useState(0);
+  const [review, setReview] = useState("");
   const [rating, setRating] = useState(null);
+  const { user } = useUserAuth();
+
   const renderReview = (review, index) => {
     return (
       <div key={index}>
-        <Body>{review.review}</Body>
+        <Body>{review.content}</Body>
         <Subtitle style={{ fontSize: "14px", fontStyle: "italic" }}>
-          {review.author}
+          {review.fname + " " + review.lname + " - " + review.rating + "/5"}
         </Subtitle>
       </div>
     );
@@ -73,13 +80,33 @@ const CasualServiceCard = (props) => {
     setOpenDialog(true);
   };
 
-  const handleReviewsubmit = () => {
+  const handleReviewSubmit = () => {
     const data = {
-      review,
-      rating,
+      service_uuid: props.content.casualservice_id,
+      rating: rating,
+      content: review,
+      fname: user.fname,
+      lname: user.lname
     };
-    console.log(data);
+    axios.post("http://localhost:3001/create-review", data).then((response) => {
+      getReviews(props.content.casualservice_id);
+    });
   };
+
+  const getReviews = (uuid) => {
+    axios.get("http://localhost:3001/get-reviews", {
+      params: {
+        service_uuid: uuid
+      }
+    }).then((response) => {
+      setReviews(response.data);
+      setOverallRating(response.data.reduce((accumulator, currReview) => accumulator + parseInt(currReview.rating), 0));
+    })
+  };
+
+  useEffect(() => {
+    getReviews(props.content.casualservice_id);
+  }, [props.content.casualservice_id]);
 
   const renderDialog = () => {
     return (
@@ -89,7 +116,7 @@ const CasualServiceCard = (props) => {
         </DialogTitle>
         <Content>
           <Body>${props.content["price"]}</Body>
-          <Body>Rating: {props.content["rating"]}/5</Body>
+          <Body>Rating: {overallRating}/5</Body>
           <Body>Provided by: {props.content["providerName"]}</Body>
           <Body>
             <a href={`mailto: ${props.content["providerEmail"]}`}>
@@ -98,35 +125,39 @@ const CasualServiceCard = (props) => {
           </Body>
           <Body>{props.content["description"]}</Body>
           <Body sx={{ fontWeight: "600" }}>Reviews</Body>
-          <TextField
-            label="Add Review"
-            multiline
-            rows={2}
-            variant="standard"
-            value={review}
-            onChange={(event) => setReivew(event.target.value)}
-          />
-          <Rating
-            name="Rating"
-            value={rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-            }}
-          />
-          <Button
-            variant="contained"
-            sx={{
-              color: "#FFFFFF",
-            }}
-            disabled={review.trim() === "" || rating === null}
-            onClick={handleReviewsubmit}
-          >
-            Post
-          </Button>
-          {props.content["reviews"].map((review, index) =>
+          {!user.isServiceProvider && (
+            <>
+              <TextField
+                label="Add Review"
+                multiline
+                rows={2}
+                variant="standard"
+                value={review}
+                onChange={(event) => setReview(event.target.value)}
+              />
+              <Rating
+                name="Rating"
+                value={rating}
+                onChange={(event, newValue) => {
+                  setRating(newValue);
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={{
+                  color: "#FFFFFF",
+                }}
+                disabled={review.trim() === "" || rating === null}
+                onClick={handleReviewSubmit}
+              >
+                Post
+              </Button>
+            </>
+          )}
+          {reviews.map((review, index) =>
             renderReview(review, index)
           )}
-          {props.content["reviews"].length === 0 && (
+          {reviews.length === 0 && (
             <Subtitle>No reviews yet</Subtitle>
           )}
         </Content>
@@ -138,7 +169,7 @@ const CasualServiceCard = (props) => {
     <>
       <Container onClick={handleClick}>
         <Title>{props.content["title"]}</Title>
-        <Subtitle>${props.content["price"].toFixed(2)}</Subtitle>
+        <Subtitle>${parseInt(props.content["price"]).toFixed(2)}</Subtitle>
       </Container>
       {renderDialog()}
     </>
