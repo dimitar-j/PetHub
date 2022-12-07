@@ -7,6 +7,8 @@ import BlogCard from "../components/BlogCard";
 import Dialog from "@mui/material/Dialog";
 import { DialogTitle } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Wrapper = styled("div")({
   width: "100ww",
@@ -46,31 +48,8 @@ const Form = styled("div")({
   padding: "0 20px 20px 20px",
 });
 
-const blogs = [
-  {
-    name: "How to Train Your Dog to Sit",
-    content:
-      "asdfwkejf asdfkjwe fkjwqfke wkjef qke f asdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke fasdfwkejf asdfkjwe fkjwqfke wkjef qke f",
-    photo:
-      "https://www.wikihow.com/images/thumb/a/a0/Teach-Your-Dog-to-Sit-Step-9-Version-3.jpg/550px-nowatermark-Teach-Your-Dog-to-Sit-Step-9-Version-3.jpg",
-  },
-  {
-    name: "Picking the Right Food for Your Puppy",
-    content:
-      "qwefkbh23 fj3h4 fkjerhv9w fwjehfv92 qwefkbh23 fj3h4 fkjerhv9w fwjehfv92 qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92 qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92qwefkbh23 fj3h4 fkjerhv9w fwjehfv92",
-    photo:
-      "https://www.coxwellvet.com/wp-content/uploads/sites/237/2022/03/dog-food-1100x650.jpg",
-  },
-  {
-    name: "How Often Should You Wash Your Dog",
-    content:
-      "qwjkefhiu2ui2 werf wekrjv3 vekiwrjv wkehfvihw kjvh skjdhf vqjehr vskjdhfv ekjhv jehf vkjsher kjvh skdfjhv ejkrhv skdjhfv keh kwejhr fvkjsh vkj hs krjvhes rjkhv sdjhv skdjhf vkejsfh vkjehr fvkjshr vkjsh ervkjshe rkvjh sekjhv eksrjhv skjdfhv ekjrhv ksjhrv ",
-    photo:
-      "https://www.akc.org/wp-content/uploads/2018/05/chowchow-in-bath-at-groomers.jpg",
-  },
-];
-
 const Blogs = () => {
+  const [blogs, setBlogs] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
@@ -82,12 +61,27 @@ const Blogs = () => {
       content: newContent,
       photo: newPhoto,
     };
-    console.log(data);
-    setNewTitle("");
-    setNewContent("");
-    setNewPhoto("");
-    setOpenDialog(false);
+    axios.post("http://localhost:3001/create-blog", {
+      data
+    }).then((response) => {
+      getBlogs();
+      setNewTitle("");
+      setNewContent("");
+      setNewPhoto("");
+      setOpenDialog(false);
+    });
   };
+
+  const getBlogs = () => {
+    axios.get("http://localhost:3001/get-blogs").then((response) => {
+      console.log(response.data);
+      setBlogs(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getBlogs();
+  }, []);
 
   const handleChange = (event) => {
     if (event.target.id == "title") {
@@ -152,6 +146,7 @@ const Blogs = () => {
       </Dialog>
     );
   };
+
   return (
     <div>
       <NavBar></NavBar>

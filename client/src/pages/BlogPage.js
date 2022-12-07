@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CommentCard from "../components/CommentCard";
+import axios from "axios";
+import { useUserAuth } from "../context/UserContext";
 const Wrapper = styled("div")({
   width: "100ww",
   display: "flex",
@@ -31,6 +33,7 @@ const Subtitle = styled("div")({
 
 const Image = styled("img")({
   borderRadius: "18px",
+  width: "450px"
 });
 
 const Body = styled("div")({
@@ -40,37 +43,65 @@ const Body = styled("div")({
   fontSize: "18px",
 });
 
-const comments = [
-  {
-    author: "Dimitar Janevski",
-    content: "Nice Post",
-  },
-  {
-    author: "Brian Nguyen",
-    content: "Very Useful",
-  },
-];
+// const comments = [
+//   {
+//     author: "Dimitar Janevski",
+//     content: "Nice Post",
+//   },
+//   {
+//     author: "Brian Nguyen",
+//     content: "Very Useful",
+//   },
+// ];
 
 const BlogPage = () => {
   const location = useLocation();
 
-  const [comment, setComment] = useState("");
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const { user } = useUserAuth();
 
   const handleChange = (event) => {
-    setComment(event.target.value);
+    setNewComment(event.target.value);
   };
 
   const handleSubmit = () => {
-    console.log(comment);
-    setComment("");
+    const data = {
+      blog_id: location.state.blog_id,
+      user_id: user.user_id,
+      content: newComment,
+      fname: user.fname,
+      lname: user.lname
+    };
+    axios.post("http://localhost:3001/create-comment", {
+      data
+    }).then((response) => {
+      setNewComment("");
+      getComments(location.state.blog_id);
+    });
   };
+
+  const getComments = (blog_id) => {
+    axios.get("http://localhost:3001/get-comments", {
+      params: {
+        blog_id: blog_id
+      }
+    }).then((response) => {
+      console.log(response);
+      setComments(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getComments(location.state.blog_id);
+  }, [location.state.blog_id]);
 
   console.log(location.state);
   return (
     <div>
       <NavBar></NavBar>
       <Wrapper>
-        <Title>{location.state.name}</Title>
+        <Title>{location.state.title}</Title>
         <Image src={location.state.photo}></Image>
         <Body>{location.state.content}</Body>
         <Subtitle>Comments</Subtitle>
@@ -79,7 +110,7 @@ const BlogPage = () => {
           multiline
           rows={2}
           variant="standard"
-          value={comment}
+          value={newComment}
           onChange={handleChange}
         />
         <Button
@@ -87,7 +118,7 @@ const BlogPage = () => {
           sx={{
             color: "#FFFFFF",
           }}
-          disabled={comment.trim() == ""}
+          disabled={newComment.trim() == ""}
           onClick={handleSubmit}
         >
           Post

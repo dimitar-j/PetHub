@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import CasualServiceCard from "../components/CasualServiceCard";
 import VetCard from "../components/VetCard";
 import AnimalCard from "../components/AnimalCard";
+import { useUserAuth } from "../context/UserContext";
 
 const Wrapper = styled("div")({
   width: "100ww",
@@ -129,7 +130,7 @@ const animals = [
 ];
 
 const Services = () => {
-  const isServiceProvider = true;
+  const { user } = useUserAuth();
   const navigate = useNavigate();
 
   return (
@@ -138,18 +139,18 @@ const Services = () => {
       <Wrapper>
         <Header>
           <Title>Services</Title>
-          {isServiceProvider && (
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ color: "#ffffff" }}
-              onClick={() => {
-                navigate("/myservices");
-              }}
-            >
-              My Services
-            </Button>
-          )}
+          {user.isServiceProvider && (
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ color: "#ffffff" }}
+                onClick={() => {
+                  navigate("/myservices");
+                }}
+              >
+                My Services
+              </Button>
+            )}
         </Header>
         <SubTitle>Casual Services</SubTitle>
         <Table>

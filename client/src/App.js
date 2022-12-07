@@ -11,8 +11,9 @@ import LogIn from "./pages/LogIn";
 import { ThemeProvider } from "@emotion/react";
 import BlogPage from "./pages/BlogPage";
 import MyServices from "./pages/MyServices";
-import { UserContext } from "./context/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { UserContextProvider } from "./context/UserContext";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -26,13 +27,12 @@ const theme = createTheme({
 
 function App() {
   const [user, setUser] = useState(null);
-  const userContextValue = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   return (
     <ThemeProvider theme={theme}>
       <div>
         <BrowserRouter>
-          <UserContext.Provider value={userContextValue}>
+          <UserContextProvider>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/register" element={<Register />} />
@@ -45,7 +45,7 @@ function App() {
                 <Route path="/myservices" element={<MyServices />} />
               </Route>
             </Routes>
-          </UserContext.Provider>
+          </UserContextProvider>
         </BrowserRouter>
       </div>
     </ThemeProvider>

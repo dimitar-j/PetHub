@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import Logo from "../assets/logo.png";
-import { UserContext } from "../context/UserContext";
+import { useUserAuth } from "../context/UserContext";
 
 const Container = styled("div")({
   display: "flex",
@@ -38,7 +38,7 @@ const Icon = styled("img")({
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useUserAuth();
 
   if (user) {
     return (

@@ -33,7 +33,7 @@ const Subtitle = styled("Div")({
 const BlogCard = (props) => {
   return (
     <Container>
-      <Subtitle>{props.content["author"]}</Subtitle>
+      <Subtitle>{props.content["fname"] + " " + props.content["lname"]}</Subtitle>
       <Title>{props.content["content"]}</Title>
     </Container>
   );

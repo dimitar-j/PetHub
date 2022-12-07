@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Axios from "axios";
@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useUserAuth } from "../context/UserContext";
 
 const Wrapper = styled("div")({
   width: "100%",
@@ -37,6 +38,7 @@ const Title = styled("div")({
 
 const Register = () => {
   const navigate = useNavigate();
+  const { user, register } = useUserAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,6 +65,7 @@ const Register = () => {
 
   const handleSubmit = () => {
     const data = {
+      user_id: -1,
       username: email,
       password: password,
       fname: firstName,
@@ -73,11 +76,14 @@ const Register = () => {
       location,
       isServiceProvider,
     };
-    console.log(data);
-    Axios.post("http://localhost:3001/create-user", data).then((res) => {
-      console.log(res);
-    });
+    register(data);
   };
+
+  useEffect(() => {
+    if (user){
+      navigate("/")
+    }
+  }, [user, navigate]);
 
   return (
     <>

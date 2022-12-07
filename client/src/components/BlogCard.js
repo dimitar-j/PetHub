@@ -30,13 +30,13 @@ const BlogCard = (props) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    const name = props.content["name"].toLowerCase().replaceAll(" ", "-");
+    const name = props.content["title"].toLowerCase().replaceAll(" ", "-");
     navigate(`/blogs/${name}`, { state: props.content });
   };
 
   return (
     <Container onClick={handleClick}>
-      <Title>{props.content["name"]}</Title>
+      <Title>{props.content["title"]}</Title>
     </Container>
   );
 };

@@ -4,6 +4,9 @@ import { styled } from "@mui/system";
 import Logo from "../assets/logo.png";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useUserAuth } from "../context/UserContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled("div")({
   width: "100%",
@@ -24,14 +27,22 @@ const FormContainer = styled("div")({
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, login } = useUserAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     const data = {
       email,
       password,
     };
-    console.log(data);
+    login(data);
   };
+
+  useEffect(() => {
+    if (user){
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <>

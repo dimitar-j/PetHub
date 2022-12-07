@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import ItemCard from "../components/ItemCard";
 import Dialog from "@mui/material/Dialog";
-import { DialogTitle } from "@mui/material";
+import { DialogTitle, getListItemSecondaryActionClassesUtilityClass } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
+import { useUserAuth } from "../context/UserContext";
 
 const Wrapper = styled("div")({
   width: "100ww",
@@ -46,51 +48,45 @@ const Form = styled("div")({
   padding: "0 20px 20px 20px",
 });
 
-const items = [
-  {
-    title: "Dog Bed",
-    category: "Housing",
-    description: "Comfortable bed for medium sized dogs. Barely used.",
-    sellerEmail: "jason.nguyen@gmail.com",
-    price: 25,
-  },
-  {
-    title: "Dog Treats",
-    category: "Food",
-    description: "2lb bag of vegan dog treats.",
-    sellerEmail: "brian.nguyen@gmail.com",
-    price: 10,
-  },
-  {
-    title: "Bird Cage Mirror",
-    category: "Toys",
-    description: "10 inch double sided mirror for large cages.",
-    sellerEmail: "dimitar.janevski@gmail.com",
-    price: 50,
-  },
-];
-
 const Marketplace = () => {
+  const [items, setItems] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newPrice, setNewPrice] = useState(1);
   const [newCategory, setNewCategory] = useState("");
+  const { user } = useUserAuth();
 
   const handleSubmit = () => {
     const data = {
       title: newTitle,
-      description: newDescription,
-      price: newPrice,
       category: newCategory,
+      description: newDescription,
+      sellerEmail: user.username,
+      price: newPrice,
     };
     console.log(data);
-    setNewTitle("");
-    setNewDescription("");
-    setNewPrice(1);
-    setNewCategory("");
-    setOpenDialog(false);
+    axios.post("http://localhost:3001/create-item", {
+      data
+    }).then((response) => {
+      getItems();
+      setNewTitle("");
+      setNewDescription("");
+      setNewPrice(1);
+      setNewCategory("");
+      setOpenDialog(false);
+    });
   };
+
+  const getItems = () => {
+    axios.get("http://localhost:3001/get-items").then((response) => {
+      setItems(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   const renderDialog = () => {
     return (
@@ -144,6 +140,7 @@ const Marketplace = () => {
       </Dialog>
     );
   };
+
   return (
     <>
       <NavBar></NavBar>
