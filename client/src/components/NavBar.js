@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import Logo from "../assets/logo.png";
@@ -38,7 +38,7 @@ const Icon = styled("img")({
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const { user, setUser } = useUserAuth();
+  const { user, logout } = useUserAuth();
 
   if (user) {
     return (
@@ -53,6 +53,9 @@ const NavBar = (props) => {
           </NavButton>
           <NavButton variant="text" onClick={() => navigate("/marketplace")}>
             Marketplace
+          </NavButton>
+          <NavButton variant="text" onClick={() => logout()}>
+            Log Out
           </NavButton>
         </TextContainer>
       </Container>

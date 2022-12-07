@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { styled } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import Rating from "@mui/material/Rating";
 const Container = styled("div")({
   boxShadow:
     "rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;",
@@ -55,21 +54,25 @@ const Content = styled("div")({
 });
 
 const VetCard = (props) => {
-  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [review, setReivew] = useState("");
+  const [rating, setRating] = useState(null);
 
   const handleClick = () => {
     setOpenDialog(true);
   };
 
   const handleReviewsubmit = () => {
-    console.log(review);
+    const data = {
+      review,
+      rating,
+    };
+    console.log(data);
   };
 
-  const renderReview = (review) => {
+  const renderReview = (review, index) => {
     return (
-      <div>
+      <div key={index}>
         <Body>{review.review}</Body>
         <Subtitle style={{ fontSize: "14px", fontStyle: "italic" }}>
           {review.author}
@@ -95,17 +98,26 @@ const VetCard = (props) => {
             value={review}
             onChange={(event) => setReivew(event.target.value)}
           />
+          <Rating
+            name="Rating"
+            value={rating}
+            onChange={(event, newValue) => {
+              setRating(newValue);
+            }}
+          />
           <Button
             variant="contained"
             sx={{
               color: "#FFFFFF",
             }}
-            disabled={review.trim() == ""}
+            disabled={review.trim() === "" || rating === null}
             onClick={handleReviewsubmit}
           >
             Post
           </Button>
-          {props.content["reviews"].map((review) => renderReview(review))}
+          {props.content["reviews"].map((review, index) =>
+            renderReview(review, index)
+          )}
           {props.content["reviews"].length === 0 && (
             <Subtitle>No reviews yet</Subtitle>
           )}

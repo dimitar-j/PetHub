@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -33,7 +33,7 @@ const Subtitle = styled("div")({
 
 const Image = styled("img")({
   borderRadius: "18px",
-  width: "450px"
+  width: "450px",
 });
 
 const Body = styled("div")({
@@ -60,25 +60,29 @@ const BlogPage = () => {
       user_id: user.user_id,
       content: newComment,
       fname: user.fname,
-      lname: user.lname
+      lname: user.lname,
     };
-    axios.post("http://localhost:3001/create-comment", {
-      data
-    }).then((response) => {
-      setNewComment("");
-      getComments(location.state.blog_id);
-    });
+    axios
+      .post("http://localhost:3001/create-comment", {
+        data,
+      })
+      .then((response) => {
+        setNewComment("");
+        getComments(location.state.blog_id);
+      });
   };
 
   const getComments = (blog_id) => {
-    axios.get("http://localhost:3001/get-comments", {
-      params: {
-        blog_id: blog_id
-      }
-    }).then((response) => {
-      console.log(response);
-      setComments(response.data);
-    });
+    axios
+      .get("http://localhost:3001/get-comments", {
+        params: {
+          blog_id: blog_id,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setComments(response.data);
+      });
   };
 
   useEffect(() => {
@@ -107,7 +111,7 @@ const BlogPage = () => {
           sx={{
             color: "#FFFFFF",
           }}
-          disabled={newComment.trim() == ""}
+          disabled={newComment.trim() === ""}
           onClick={handleSubmit}
         >
           Post

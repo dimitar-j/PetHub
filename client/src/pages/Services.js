@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import NavBar from "../components/NavBar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import CasualServiceCard from "../components/CasualServiceCard";
@@ -87,34 +87,34 @@ const Services = () => {
         <Header>
           <Title>Services</Title>
           {user.isServiceProvider && (
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ color: "#ffffff" }}
-                onClick={() => {
-                  navigate("/myservices");
-                }}
-              >
-                My Services
-              </Button>
-            )}
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ color: "#ffffff" }}
+              onClick={() => {
+                navigate("/myservices");
+              }}
+            >
+              My Services
+            </Button>
+          )}
         </Header>
         <SubTitle>Casual Services</SubTitle>
         <Table>
-          {casualServices.map((cs) => (
-            <CasualServiceCard content={cs}></CasualServiceCard>
+          {casualServices.map((cs, index) => (
+            <CasualServiceCard key={index} content={cs}></CasualServiceCard>
           ))}
         </Table>
         <SubTitle>Vets</SubTitle>
         <Table>
-          {vets.map((vet) => (
-            <VetCard content={vet}></VetCard>
+          {vets.map((vet, index) => (
+            <VetCard key={index} content={vet}></VetCard>
           ))}
         </Table>
         <SubTitle>Animals</SubTitle>
         <Table>
-          {animals.map((animal) => (
-            <AnimalCard content={animal}></AnimalCard>
+          {animals.map((animal, index) => (
+            <AnimalCard key={index} content={animal}></AnimalCard>
           ))}
         </Table>
       </Wrapper>
