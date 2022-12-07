@@ -43,17 +43,6 @@ const Body = styled("div")({
   fontSize: "18px",
 });
 
-// const comments = [
-//   {
-//     author: "Dimitar Janevski",
-//     content: "Nice Post",
-//   },
-//   {
-//     author: "Brian Nguyen",
-//     content: "Very Useful",
-//   },
-// ];
-
 const BlogPage = () => {
   const location = useLocation();
 
