@@ -8,6 +8,9 @@ import VetCard from "../components/VetCard";
 import AnimalCard from "../components/AnimalCard";
 import { DialogTitle, Dialog } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
+import { useUserAuth } from "../context/UserContext";
+import { useEffect } from "react";
 
 const Wrapper = styled("div")({
   width: "100ww",
@@ -56,60 +59,10 @@ const Form = styled("div")({
   padding: "0 20px 20px 20px",
 });
 
-const casualServices = [
-  {
-    title: "Dog Walking",
-    description: "I will walk your dog around forest lawn for 1 hour a week",
-    providerEmail: "jason.nguyen@gmail.com",
-    providerName: "Jason Nguyen",
-    location: "NE Calgary",
-    price: 25,
-    rating: 4.7,
-    reviews: [
-      {
-        review: "soooo gooooooood",
-        author: "John Doe",
-      },
-      {
-        review: "he stole my dog",
-        author: "John Doe",
-      },
-    ],
-  },
-];
-
-const vets = [
-  {
-    title: "Bridlewood Veterinary",
-    location: "Bridlewood",
-    rating: 3.7,
-    reviews: [
-      {
-        review: "Friendly staff",
-        author: "Fiachna Asher",
-      },
-    ],
-  },
-];
-
-const animals = [
-  {
-    title: "Shi Tzu",
-    description: "4 yeard old Shi Tzu looking for a new family",
-    providerEmail: "dimitar.janevski@gmail.com",
-    breed: "Shi Tzu",
-    providerName: "Dimitar Janevski",
-    location: "Somerset",
-    price: 750,
-    rating: "-",
-    image: "https://cdn.britannica.com/05/234205-050-F8D2E018/Shih-tzu-dog.jpg",
-    reviews: [],
-  },
-];
-
 const MyServices = () => {
   const isServiceProvider = true;
   const navigate = useNavigate();
+  const { user } = useUserAuth();
   const [addingService, setAddingService] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -121,6 +74,40 @@ const MyServices = () => {
   const [newCertLink, setNewCertLink] = useState("");
   const [newVetExpDate, setNewVetExpDate] = useState("");
   const [newIssuer, setNewIssuer] = useState("");
+
+  const [myCasualServices, setMyCasualServices] = useState([]);
+  const [myVets, setMyVets] = useState([]);
+  const [myAnimals, setMyAnimals] = useState([]);
+
+  const getMyCasualServices = (user_id) => {
+    axios.get("http://localhost:3001/get-mycasualservices", {
+      params: {
+        user_id: user_id
+      }
+    }).then((response) => {
+      console.log(response);
+    })
+  };
+
+  const getMyVets = (user_id) => {
+    axios.get("http://localhost:3001/get-myvets", {
+      params: {
+        user_id: user_id
+      }
+    }).then((response) => {
+      console.log(response);
+    })
+  };
+
+  const getMyAnimals = (user_id) => {
+    axios.get("http://localhost:3001/get-myanimals", {
+      params: {
+        user_id: user_id
+      }
+    }).then((response) => {
+      console.log(response);
+    })
+  };
 
   const handleDialogOpen = (service) => {
     setOpenDialog(true);
@@ -143,31 +130,53 @@ const MyServices = () => {
   const handleSubmit = () => {
     if (addingService === "Casual Service") {
       const data = {
+        user_id: user.user_id,
         title: newTitle,
         description: newDescription,
+        providerEmail: user.username,
+        providerName: user.fname + " " + user.lname,
+        location: user.location,
         price: newPrice,
       };
-      console.log(data);
+      axios.post("http://localhost:3001/create-casualservice", data).then((response) => {
+        console.log(response.data);
+      });
     } else if (addingService === "Veterinary") {
       const data = {
-        name: newTitle,
+        user_id: user.user_id,
+        title: newTitle,
+        location: user.location,
         certLink: newCertLink,
         certExpDate: newVetExpDate,
         issuer: newIssuer,
       };
-      console.log(data);
+      axios.post("http://localhost:3001/create-vet", data).then((response) => {
+        console.log(response.data);
+      });
     } else if (addingService === "Animal") {
       const data = {
+        user_id: user.user_id,
         title: newTitle,
         description: newDescription,
-        price: newPrice,
-        locaiton: newLocation,
+        providerEmail: user.username,
         breed: newBreed,
-        photoURL: newPhoto,
+        providerName: user.fname + " " + user.lname,
+        location: newLocation,
+        price: newPrice,
+        image: newPhoto,
       };
+      axios.post("http://localhost:3001/create-animal", data).then((response) => {
+        console.log(response.data);
+      });
       console.log(data);
     }
   };
+
+  useEffect(() => {
+    getMyCasualServices(user.user_id);
+    getMyVets(user.user_id);
+    getMyAnimals(user.user_id);
+  }, [user]);
 
   const renderDialog = () => {
     if (addingService === "Casual Service") {
@@ -328,6 +337,12 @@ const MyServices = () => {
     }
   };
 
+  useEffect(() => {
+    getMyCasualServices(user.user_id);
+    getMyVets(user.user_id);
+    getMyAnimals(user.user_id);
+  }, [user]);
+
   return (
     <>
       <NavBar></NavBar>
@@ -349,7 +364,7 @@ const MyServices = () => {
           </Button>
         </Header>
         <Table>
-          {casualServices.map((cs) => (
+          {myCasualServices.map((cs) => (
             <CasualServiceCard content={cs}></CasualServiceCard>
           ))}
         </Table>
@@ -367,7 +382,7 @@ const MyServices = () => {
           </Button>
         </Header>
         <Table>
-          {vets.map((vet) => (
+          {myVets.map((vet) => (
             <VetCard content={vet}></VetCard>
           ))}
         </Table>
@@ -385,7 +400,7 @@ const MyServices = () => {
           </Button>
         </Header>
         <Table>
-          {animals.map((animal) => (
+          {myAnimals.map((animal) => (
             <AnimalCard content={animal}></AnimalCard>
           ))}
         </Table>
