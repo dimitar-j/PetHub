@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar";
-import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import CasualServiceCard from "../components/CasualServiceCard";
@@ -108,8 +107,6 @@ const animals = [
 ];
 
 const MyServices = () => {
-  const isServiceProvider = true;
-  const navigate = useNavigate();
   const [addingService, setAddingService] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -203,8 +200,8 @@ const MyServices = () => {
               sx={{ color: "#ffffff" }}
               onClick={handleSubmit}
               disabled={
-                newTitle.trim() == "" ||
-                newDescription.trim() == "" ||
+                newTitle.trim() === "" ||
+                newDescription.trim() === "" ||
                 newPrice < 1
               }
             >
@@ -251,9 +248,9 @@ const MyServices = () => {
               sx={{ color: "#ffffff" }}
               onClick={handleSubmit}
               disabled={
-                newTitle.trim() == "" ||
-                newCertLink.trim() == "" ||
-                newIssuer.trim() == "" ||
+                newTitle.trim() === "" ||
+                newCertLink.trim() === "" ||
+                newIssuer.trim() === "" ||
                 !newVetExpDate.trim()
               }
             >
@@ -312,8 +309,8 @@ const MyServices = () => {
               sx={{ color: "#ffffff" }}
               onClick={handleSubmit}
               disabled={
-                newTitle.trim() == "" ||
-                newDescription.trim() == "" ||
+                newTitle.trim() === "" ||
+                newDescription.trim() === "" ||
                 newLocation.trim() === "" ||
                 newBreed.trim() === "" ||
                 newPhoto.trim() === "" ||

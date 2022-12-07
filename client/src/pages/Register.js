@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import Axios from "axios";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -53,12 +52,12 @@ const Register = () => {
   const validForm = () => {
     return (
       email !== "" &&
-      password != "" &&
-      firstName != "" &&
-      lastName != "" &&
-      address != "" &&
-      birthday != "" &&
-      pfLink != "" &&
+      password !== "" &&
+      firstName !== "" &&
+      lastName !== "" &&
+      address !== "" &&
+      birthday !== "" &&
+      pfLink !== "" &&
       (isServiceProvider ? location !== "" : true)
     );
   };
@@ -80,8 +79,8 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (user){
-      navigate("/")
+    if (user) {
+      navigate("/");
     }
   }, [user, navigate]);
 

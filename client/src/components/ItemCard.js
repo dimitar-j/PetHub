@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { styled } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 
@@ -66,7 +65,6 @@ const Content = styled("div")({
 });
 
 const ItemCard = (props) => {
-  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleClick = () => {

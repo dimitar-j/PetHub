@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
 import { styled } from "@mui/system";
 import NavBar from "../components/NavBar.js";
 import Logo from "../assets/logo.png";
@@ -41,13 +40,11 @@ const SubTitle = styled("div")({
 });
 
 const Home = () => {
-  const navigate = useNavigate();
-
   return (
     <Page>
       <NavBar></NavBar>
       <Container>
-        <img src={Logo} width="300px" height="300px"></img>
+        <img src={Logo} width="300px" height="300px" alt="logo"></img>
         <TextContainer>
           <Title>PetHub</Title>
           <SubTitle>One stop shop for your pet</SubTitle>

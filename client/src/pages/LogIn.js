@@ -19,7 +19,6 @@ const Wrapper = styled("div")({
 const FormContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
   gap: "25px",
   alignItems: "center",
 });
@@ -39,7 +38,7 @@ const LogIn = () => {
   };
 
   useEffect(() => {
-    if (user){
+    if (user) {
       navigate("/");
     }
   }, [user, navigate]);
@@ -49,7 +48,7 @@ const LogIn = () => {
       <NavBar></NavBar>
       <Wrapper>
         <FormContainer>
-          <img src={Logo} width="40%"></img>
+          <img src={Logo} width="40%" alt="logo"></img>
           <TextField
             value={email}
             onChange={(event) => setEmail(event.target.value)}

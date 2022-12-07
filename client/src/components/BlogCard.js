@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   boxShadow:

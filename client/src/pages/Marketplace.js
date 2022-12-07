@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
 import ItemCard from "../components/ItemCard";
 import Dialog from "@mui/material/Dialog";
-import { DialogTitle, getListItemSecondaryActionClassesUtilityClass } from "@mui/material";
+import { DialogTitle } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useUserAuth } from "../context/UserContext";
@@ -66,16 +65,18 @@ const Marketplace = () => {
       price: newPrice,
     };
     console.log(data);
-    axios.post("http://localhost:3001/create-item", {
-      data
-    }).then((response) => {
-      getItems();
-      setNewTitle("");
-      setNewDescription("");
-      setNewPrice(1);
-      setNewCategory("");
-      setOpenDialog(false);
-    });
+    axios
+      .post("http://localhost:3001/create-item", {
+        data,
+      })
+      .then((response) => {
+        getItems();
+        setNewTitle("");
+        setNewDescription("");
+        setNewPrice(1);
+        setNewCategory("");
+        setOpenDialog(false);
+      });
   };
 
   const getItems = () => {
@@ -128,9 +129,9 @@ const Marketplace = () => {
             sx={{ color: "#ffffff" }}
             onClick={handleSubmit}
             disabled={
-              newTitle.trim() == "" ||
-              newDescription.trim() == "" ||
-              newCategory.trim() == "" ||
+              newTitle.trim() === "" ||
+              newDescription.trim() === "" ||
+              newCategory.trim() === "" ||
               newPrice < 1
             }
           >
