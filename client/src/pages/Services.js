@@ -8,6 +8,7 @@ import VetCard from "../components/VetCard";
 import AnimalCard from "../components/AnimalCard";
 import { useUserAuth } from "../context/UserContext";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Wrapper = styled("div")({
   width: "100ww",
