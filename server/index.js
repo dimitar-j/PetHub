@@ -276,6 +276,63 @@ app.get("/get-reviews", (req, res) => {
   );
 });
 
+app.post("/delete-item", (req, res) => {
+  db.query(
+    "DELETE * FROM marketplace_items WHERE id = ?",
+    [req.body.item_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/update-item", (req, res) => {
+  db.query(
+    "UPDATE marketplace_items SET title = ?, category = ?, description = ?, price = ?",
+    [req.body.title, req.body.category, req.body.description, req.body.price],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/delete-blog", (req, res) => {
+  db.query(
+    "DELETE * FROM blogs WHERE id = ?",
+    [req.body.blog_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/update-blog", (req, res) => {
+  db.query(
+    "UPDATE blog SET title = ?, content = ?, photo = ? WHERE blog_id = ?",
+    [req.body.title, req.body.content, req.body.photo],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+
+});
+
 app.listen(3001, () => {
   console.log("server running port 3001");
 });
