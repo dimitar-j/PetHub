@@ -2,11 +2,11 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
 const { profile } = require("console");
-var crypto = require('crypto')
-var shasum = crypto.createHash('sha1')
+var crypto = require("crypto");
+var shasum = crypto.createHash("sha1");
 
 app.use(cors());
 app.use(express.json());
@@ -23,7 +23,20 @@ const db = mysql.createConnection({
 app.post("/create-user", (req, res) => {
   db.query(
     "INSERT INTO users (username, password, fname, lname, birthday, address, profile_photo, location, isServiceProvider) VALUES (?,?,?,?,?,?,?,?,?)",
-    [req.body.userInfo.username, crypto.createHash('sha1').update(req.body.userInfo.password).digest('hex'), req.body.userInfo.fname, req.body.userInfo.lname, req.body.userInfo.birthday, req.body.userInfo.address, req.body.userInfo.profile_photo, req.body.userInfo.location, req.body.userInfo.isServiceProvider],
+    [
+      req.body.userInfo.username,
+      crypto
+        .createHash("sha1")
+        .update(req.body.userInfo.password)
+        .digest("hex"),
+      req.body.userInfo.fname,
+      req.body.userInfo.lname,
+      req.body.userInfo.birthday,
+      req.body.userInfo.address,
+      req.body.userInfo.profile_photo,
+      req.body.userInfo.location,
+      req.body.userInfo.isServiceProvider,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -37,7 +50,10 @@ app.post("/create-user", (req, res) => {
 app.get("/login", (req, res) => {
   db.query(
     "SELECT * FROM users WHERE username = ? AND password = ?",
-    [req.query.email, crypto.createHash('sha1').update(req.query.password).digest('hex')],
+    [
+      req.query.email,
+      crypto.createHash("sha1").update(req.query.password).digest("hex"),
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -51,7 +67,14 @@ app.get("/login", (req, res) => {
 app.post("/create-item", (req, res) => {
   db.query(
     "INSERT INTO marketplace_items (title, category, description, sellerEmail, user_id, price) VALUES (?,?,?,?,?,?)",
-    [req.body.data.title, req.body.data.category, req.body.data.description, req.body.data.sellerEmail, req.body.data.user_id, req.body.data.price],
+    [
+      req.body.data.title,
+      req.body.data.category,
+      req.body.data.description,
+      req.body.data.sellerEmail,
+      req.body.data.user_id,
+      req.body.data.price,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -74,8 +97,13 @@ app.get("/get-items", (req, res) => {
 
 app.post("/create-blog", (req, res) => {
   db.query(
-    "INSERT INTO blogs (title, content, photo) VALUES (?,?,?)",
-    [req.body.data.title, req.body.data.content, req.body.data.photo],
+    "INSERT INTO blogs (title, content, photo, user_id) VALUES (?,?,?,?)",
+    [
+      req.body.data.title,
+      req.body.data.content,
+      req.body.data.photo,
+      req.body.data.user_id,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -99,7 +127,13 @@ app.get("/get-blogs", (req, res) => {
 app.post("/create-comment", (req, res) => {
   db.query(
     "INSERT INTO comments (blog_id, user_id, content, fname, lname) VALUES (?,?,?,?,?)",
-    [req.body.data.blog_id, req.body.data.user_id, req.body.data.content, req.body.data.fname, req.body.data.lname],
+    [
+      req.body.data.blog_id,
+      req.body.data.user_id,
+      req.body.data.content,
+      req.body.data.fname,
+      req.body.data.lname,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -111,21 +145,33 @@ app.post("/create-comment", (req, res) => {
 });
 
 app.get("/get-comments", (req, res) => {
-  db.query("SELECT * FROM comments WHERE blog_id = ?",
-  [req.query.blog_id],
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  db.query(
+    "SELECT * FROM comments WHERE blog_id = ?",
+    [req.query.blog_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.post("/create-animal", (req, res) => {
   db.query(
     "INSERT INTO animals (user_id, title, description, providerEmail, breed, providerName, location, price, image) VALUES (?,?,?,?,?,?,?,?,?)",
-    [req.body.user_id, req.body.title, req.body.description, req.body.providerEmail, req.body.breed, req.body.providerName, req.body.location, req.body.price, req.body.image],
+    [
+      req.body.user_id,
+      req.body.title,
+      req.body.description,
+      req.body.providerEmail,
+      req.body.breed,
+      req.body.providerName,
+      req.body.location,
+      req.body.price,
+      req.body.image,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -137,13 +183,16 @@ app.post("/create-animal", (req, res) => {
 });
 
 app.get("/get-animals", (req, res) => {
-  db.query("SELECT *, BIN_TO_UUID(animal_id, true) AS animal_id FROM animals", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  db.query(
+    "SELECT *, BIN_TO_UUID(animal_id, true) AS animal_id FROM animals",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.post("/create-vet", (req, res) => {
@@ -156,7 +205,12 @@ app.post("/create-vet", (req, res) => {
       } else {
         db.query(
           "INSERT INTO vets (user_id, title, location, certification_id) VALUES (?,?,?,?)",
-          [req.body.user_id, req.body.title, req.body.location, result1.insertId],
+          [
+            req.body.user_id,
+            req.body.title,
+            req.body.location,
+            result1.insertId,
+          ],
           (err, result2) => {
             if (err) {
               console.log(err);
@@ -171,20 +225,31 @@ app.post("/create-vet", (req, res) => {
 });
 
 app.get("/get-vets", (req, res) => {
-  db.query("SELECT *, BIN_TO_UUID(vet_id, true) AS vet_id FROM vets", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  db.query(
+    "SELECT *, BIN_TO_UUID(vet_id, true) AS vet_id FROM vets",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.post("/create-casualservice", (req, res) => {
   console.log(req.body);
   db.query(
     "INSERT INTO casualservices (user_id, title, description, providerEmail, providerName, location, price) VALUES (?,?,?,?,?,?,?)",
-    [req.body.user_id, req.body.title, req.body.description, req.body.providerEmail, req.body.providerName, req.body.location, req.body.price],
+    [
+      req.body.user_id,
+      req.body.title,
+      req.body.description,
+      req.body.providerEmail,
+      req.body.providerName,
+      req.body.location,
+      req.body.price,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -196,13 +261,16 @@ app.post("/create-casualservice", (req, res) => {
 });
 
 app.get("/get-casualservices", (req, res) => {
-  db.query("SELECT *, BIN_TO_UUID(casualservice_id, true) AS casualservice_id FROM casualservices", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  db.query(
+    "SELECT *, BIN_TO_UUID(casualservice_id, true) AS casualservice_id FROM casualservices",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 app.get("/get-mycasualservices", (req, res) => {
@@ -251,7 +319,13 @@ app.post("/create-review", (req, res) => {
   console.log(req.body);
   db.query(
     "INSERT INTO reviews (service_uuid, rating, content, fname, lname) VALUES (?,?,?,?,?)",
-    [req.body.service_uuid, req.body.rating, req.body.content, req.body.fname, req.body.lname],
+    [
+      req.body.service_uuid,
+      req.body.rating,
+      req.body.content,
+      req.body.fname,
+      req.body.lname,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);

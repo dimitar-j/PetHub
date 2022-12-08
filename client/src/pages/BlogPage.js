@@ -43,11 +43,20 @@ const Body = styled("div")({
   fontSize: "18px",
 });
 
+const EditDeleteContainer = styled("div")({
+  display: "flex",
+  gap: "20px",
+});
+
 const BlogPage = () => {
   const location = useLocation();
 
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(location.state.title);
+  const [newPhoto, setNewPhoto] = useState(location.state.photo);
+  const [newBody, setNewBody] = useState(location.state.content);
   const { user } = useUserAuth();
 
   const handleChange = (event) => {
@@ -85,18 +94,72 @@ const BlogPage = () => {
       });
   };
 
+  const handleDelete = () => {
+    // Delete blog API
+    console.log(location.state.blog_id);
+  };
+
+  const handleEdit = () => {
+    const data = {
+      newTitle,
+      newPhoto,
+      newBody,
+    };
+    setEditing(!editing);
+    console.log(data);
+  };
+
   useEffect(() => {
     getComments(location.state.blog_id);
   }, [location.state.blog_id]);
 
   console.log(location.state);
+
+  const displayEditDelete = () => {
+    return (
+      <EditDeleteContainer>
+        <Button variant="outlined" onClick={handleEdit}>
+          {editing ? "Save" : "Edit"}
+        </Button>
+        <Button variant="outlined" color="error" onClick={handleDelete}>
+          Delete
+        </Button>
+      </EditDeleteContainer>
+    );
+  };
   return (
     <div>
       <NavBar></NavBar>
       <Wrapper>
-        <Title>{location.state.title}</Title>
-        <Image src={location.state.photo}></Image>
-        <Body>{location.state.content}</Body>
+        {editing ? (
+          <TextField
+            label="Title"
+            value={newTitle}
+            onChange={(event) => setNewTitle(event.target.value)}
+          ></TextField>
+        ) : (
+          <Title>{location.state.title}</Title>
+        )}
+        {editing ? (
+          <TextField
+            label="Photo URL"
+            value={newPhoto}
+            onChange={(event) => setNewPhoto(event.target.value)}
+          ></TextField>
+        ) : (
+          <Image src={location.state.photo}></Image>
+        )}
+        {editing ? (
+          <TextField
+            label="Content"
+            value={newBody}
+            onChange={(event) => setNewBody(event.target.value)}
+          ></TextField>
+        ) : (
+          <Body>{location.state.content}</Body>
+        )}
+
+        {user.user_id == location.state.user_id ? displayEditDelete() : null}
         <Subtitle>Comments</Subtitle>
         <TextField
           label="Add Comment"
@@ -116,9 +179,12 @@ const BlogPage = () => {
         >
           Post
         </Button>
-        {comments.slice(0).reverse().map((comment) => (
-          <CommentCard content={comment}></CommentCard>
-        ))}
+        {comments
+          .slice(0)
+          .reverse()
+          .map((comment) => (
+            <CommentCard content={comment}></CommentCard>
+          ))}
       </Wrapper>
     </div>
   );

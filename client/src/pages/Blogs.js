@@ -8,6 +8,7 @@ import { DialogTitle } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useEffect } from "react";
+import { useUserAuth } from "../context/UserContext";
 
 const Wrapper = styled("div")({
   width: "100ww",
@@ -48,6 +49,8 @@ const Form = styled("div")({
 });
 
 const Blogs = () => {
+  const { user, logout } = useUserAuth();
+
   const [blogs, setBlogs] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -59,6 +62,7 @@ const Blogs = () => {
       title: newTitle,
       content: newContent,
       photo: newPhoto,
+      user_id: user.user_id,
     };
     axios
       .post("http://localhost:3001/create-blog", {
@@ -166,9 +170,12 @@ const Blogs = () => {
           </Button>
         </Header>
         <Table>
-          {blogs.slice(0).reverse().map((blog) => (
-            <BlogCard content={blog}></BlogCard>
-          ))}
+          {blogs
+            .slice(0)
+            .reverse()
+            .map((blog) => (
+              <BlogCard content={blog}></BlogCard>
+            ))}
         </Table>
       </Wrapper>
       {renderDialog()}
