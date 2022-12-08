@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { styled } from "@mui/system";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import { useUserAuth } from "../context/UserContext";
+import Button from "@mui/material/Button";
+import axios from "axios";
 
 const Container = styled("div")({
   boxShadow:
@@ -66,9 +69,19 @@ const Content = styled("div")({
 
 const ItemCard = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
+  const { user } = useUserAuth();
 
   const handleClick = () => {
     setOpenDialog(true);
+  };
+
+  const deleteItem = () => {
+    console.log(props.content["id"])
+    axios.post("http://localhost:3001/delete-item", {
+      item_id: props.content["id"],
+    }).then((response) => {
+      console.log(response);
+    });
   };
 
   const renderDialog = () => {
@@ -86,6 +99,16 @@ const ItemCard = (props) => {
           </Body>
           <Body>{props.content["description"]}</Body>
         </Content>
+        {parseInt(props.content["user_id"]) === user.user_id && (
+          <Button
+          variant="contained"
+          color="primary"
+          sx={{ color: "#ffffff" }}
+          onClick={deleteItem}
+          >
+          Delete Item
+        </Button>
+        )} 
       </Dialog>
     );
   };
