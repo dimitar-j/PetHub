@@ -366,8 +366,8 @@ app.post("/delete-item", (req, res) => {
 
 app.post("/update-item", (req, res) => {
   db.query(
-    "UPDATE marketplace_items SET title = ?, category = ?, description = ?, price = ?",
-    [req.body.title, req.body.category, req.body.description, req.body.price],
+    "UPDATE marketplace_items SET title = ?, category = ?, description = ?, price = ? WHERE id = ?",
+    [req.body.data.title, req.body.data.category, req.body.data.description, req.body.data.price, req.body.data.id],
     (err, result) => {
       if (err) {
         console.log(err);

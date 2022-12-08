@@ -6,6 +6,7 @@ import { useUserAuth } from "../context/UserContext";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 
 
 const Container = styled("div")({
@@ -84,6 +85,7 @@ const ItemCard = (props) => {
   const [newPrice, setNewPrice] = useState(props.content['price']);
   const [newCategory, setNewCategory] = useState(props.content['category']);
   const { user } = useUserAuth();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setOpenDialog(true);
@@ -95,6 +97,9 @@ const ItemCard = (props) => {
       item_id: props.content["id"],
     }).then((response) => {
       console.log(response);
+      setOpenDialog(false);
+      setEditingDialog(false);
+      navigate(0);
     });
   };
 
@@ -103,17 +108,21 @@ const ItemCard = (props) => {
     setOpenDialog(false);
   }
 
-  const handleEditBlog = () => {
+  const handleEditItem = () => {
     const data = {
       title: newTitle,
       category: newCategory,
       description: newDescription,
       sellerEmail: user.username,
-      user_id: user.user_id,
       price: newPrice,
+      id: props.content["id"],
     };
-
-    console.log(data);
+    axios.post("http://localhost:3001/update-item", {
+      data,
+    }).then((response) => {
+      console.log(response);
+      navigate(0);
+    })
   };
 
   const renderDialog = () => {
@@ -185,7 +194,7 @@ const ItemCard = (props) => {
               variant="contained"
               color="primary"
               sx={{ color: "#ffffff" }}
-              onClick={handleEditBlog}
+              onClick={handleEditItem}
               disabled={
                 newTitle.trim() === "" ||
                 newDescription.trim() === "" ||
