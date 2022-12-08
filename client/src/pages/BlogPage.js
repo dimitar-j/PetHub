@@ -116,7 +116,7 @@ const BlogPage = () => {
         >
           Post
         </Button>
-        {comments.map((comment) => (
+        {comments.slice(0).reverse().map((comment) => (
           <CommentCard content={comment}></CommentCard>
         ))}
       </Wrapper>

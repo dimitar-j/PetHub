@@ -135,7 +135,7 @@ app.post("/create-animal", (req, res) => {
 });
 
 app.get("/get-animals", (req, res) => {
-  db.query("SELECT * FROM animals", (err, result) => {
+  db.query("SELECT *, BIN_TO_UUID(animal_id, true) AS animal_id FROM animals", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -159,7 +159,7 @@ app.post("/create-vet", (req, res) => {
 });
 
 app.get("/get-vets", (req, res) => {
-  db.query("SELECT * FROM vets", (err, result) => {
+  db.query("SELECT *, BIN_TO_UUID(vet_id, true) AS vet_id FROM vets", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -184,7 +184,7 @@ app.post("/create-casualservice", (req, res) => {
 });
 
 app.get("/get-casualservices", (req, res) => {
-  db.query("SELECT * FROM casualservices", (err, result) => {
+  db.query("SELECT *, BIN_TO_UUID(casualservice_id, true) AS casualservice_id FROM casualservices", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -195,7 +195,7 @@ app.get("/get-casualservices", (req, res) => {
 
 app.get("/get-mycasualservices", (req, res) => {
   db.query(
-    "SELECT * FROM casualservices WHERE user_id = ?",
+    "SELECT *, BIN_TO_UUID(casualservice_id, true) AS casualservice_id FROM casualservices WHERE user_id = ?",
     [req.query.user_id],
     (err, result) => {
       if (err) {
@@ -209,7 +209,7 @@ app.get("/get-mycasualservices", (req, res) => {
 
 app.get("/get-myvets", (req, res) => {
   db.query(
-    "SELECT * FROM vets WHERE user_id = ?",
+    "SELECT *, BIN_TO_UUID(vet_id, true) AS vet_id FROM vets WHERE user_id = ?",
     [req.query.user_id],
     (err, result) => {
       if (err) {
@@ -223,8 +223,37 @@ app.get("/get-myvets", (req, res) => {
 
 app.get("/get-myanimals", (req, res) => {
   db.query(
-    "SELECT * FROM animals WHERE user_id = ?",
+    "SELECT *, BIN_TO_UUID(animal_id, true) AS animal_id FROM animals WHERE user_id = ?",
     [req.query.user_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.post("/create-review", (req, res) => {
+  console.log(req.body);
+  db.query(
+    "INSERT INTO reviews (service_uuid, rating, content, fname, lname) VALUES (?,?,?,?,?)",
+    [req.body.service_uuid, req.body.rating, req.body.content, req.body.fname, req.body.lname],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/get-reviews", (req, res) => {
+  db.query(
+    "SELECT * FROM reviews WHERE service_uuid = ?",
+    [req.query.service_uuid],
     (err, result) => {
       if (err) {
         console.log(err);

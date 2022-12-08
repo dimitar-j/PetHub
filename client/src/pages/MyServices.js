@@ -85,7 +85,7 @@ const MyServices = () => {
         user_id: user_id
       }
     }).then((response) => {
-      console.log(response);
+      setMyCasualServices(response.data);
     })
   };
 
@@ -95,7 +95,7 @@ const MyServices = () => {
         user_id: user_id
       }
     }).then((response) => {
-      console.log(response);
+      setMyVets(response.data);
     })
   };
 
@@ -105,7 +105,7 @@ const MyServices = () => {
         user_id: user_id
       }
     }).then((response) => {
-      console.log(response);
+      setMyAnimals(response.data);
     })
   };
 
@@ -139,7 +139,8 @@ const MyServices = () => {
         price: newPrice,
       };
       axios.post("http://localhost:3001/create-casualservice", data).then((response) => {
-        console.log(response.data);
+        getMyCasualServices(user.user_id);
+        setOpenDialog(false);
       });
     } else if (addingService === "Veterinary") {
       const data = {
@@ -151,7 +152,8 @@ const MyServices = () => {
         issuer: newIssuer,
       };
       axios.post("http://localhost:3001/create-vet", data).then((response) => {
-        console.log(response.data);
+        getMyVets(user.user_id);
+        setOpenDialog(false);
       });
     } else if (addingService === "Animal") {
       const data = {
@@ -166,9 +168,9 @@ const MyServices = () => {
         image: newPhoto,
       };
       axios.post("http://localhost:3001/create-animal", data).then((response) => {
-        console.log(response.data);
+        getMyAnimals(user.user_id);
+        setOpenDialog(false);
       });
-      console.log(data);
     }
   };
 
@@ -364,8 +366,8 @@ const MyServices = () => {
           </Button>
         </Header>
         <Table>
-          {myCasualServices.map((cs) => (
-            <CasualServiceCard content={cs}></CasualServiceCard>
+          {myCasualServices.map((cs, index) => (
+            <CasualServiceCard key={index} content={cs}></CasualServiceCard>
           ))}
         </Table>
         <Header>
@@ -382,8 +384,8 @@ const MyServices = () => {
           </Button>
         </Header>
         <Table>
-          {myVets.map((vet) => (
-            <VetCard content={vet}></VetCard>
+          {myVets.map((vet, index) => (
+            <VetCard key={index} content={vet}></VetCard>
           ))}
         </Table>
         <Header>
@@ -400,8 +402,8 @@ const MyServices = () => {
           </Button>
         </Header>
         <Table>
-          {myAnimals.map((animal) => (
-            <AnimalCard content={animal}></AnimalCard>
+          {myAnimals.map((animal, index) => (
+            <AnimalCard key={index} content={animal}></AnimalCard>
           ))}
         </Table>
       </Wrapper>

@@ -166,7 +166,7 @@ const Blogs = () => {
           </Button>
         </Header>
         <Table>
-          {blogs.map((blog) => (
+          {blogs.slice(0).reverse().map((blog) => (
             <BlogCard content={blog}></BlogCard>
           ))}
         </Table>
