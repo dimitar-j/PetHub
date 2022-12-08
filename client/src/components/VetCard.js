@@ -5,6 +5,10 @@ import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
+import axios from "axios";
+import { useUserAuth } from "../context/UserContext";
+import { useEffect } from "react";
+
 const Container = styled("div")({
   boxShadow:
     "rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;",
@@ -54,32 +58,59 @@ const Content = styled("div")({
 });
 
 const VetCard = (props) => {
+  const { user } = useUserAuth();
   const [openDialog, setOpenDialog] = useState(false);
-  const [review, setReivew] = useState("");
+  const [overallRating, setOverallRating] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [review, setReview] = useState("");
   const [rating, setRating] = useState(null);
 
   const handleClick = () => {
     setOpenDialog(true);
   };
 
-  const handleReviewsubmit = () => {
+  const handleReviewSubmit = () => {
     const data = {
-      review,
-      rating,
+      service_uuid: props.content.vet_id,
+      rating: rating,
+      content: review,
+      fname: user.fname,
+      lname: user.lname
     };
     console.log(data);
+    axios.post("http://localhost:3001/create-review", data).then((response) => {
+      getReviews(props.content.vet_id);
+      setReview("");
+      setRating(null);
+    });
+  };
+
+  const getReviews = (uuid) => {
+    axios.get("http://localhost:3001/get-reviews", {
+      params: {
+        service_uuid: uuid
+      }
+    }).then((response) => {
+      setReviews(response.data);
+      setOverallRating((response.data.reduce((accumulator, currReview) => accumulator + parseInt(currReview.rating), 0) / response.data.length).toFixed(1));
+    })
   };
 
   const renderReview = (review, index) => {
     return (
       <div key={index}>
-        <Body>{review.review}</Body>
+        <Body>{review.content}</Body>
         <Subtitle style={{ fontSize: "14px", fontStyle: "italic" }}>
-          {review.author}
+          {review.fname + " " + review.lname + " - " + review.rating + "/5"}
         </Subtitle>
       </div>
     );
   };
+
+  useEffect(() => {
+    getReviews(props.content.vet_id);
+  }, [props.content.vet_id]);
+
   const renderDialog = () => {
     return (
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
@@ -87,40 +118,44 @@ const VetCard = (props) => {
           <Title>{props.content["title"]}</Title>
         </DialogTitle>
         <Content>
-          <Body>Rating: {props.content["rating"]}/5</Body>
+          <Body>Rating: {overallRating}/5</Body>
           <Body>Location: {props.content["location"]}</Body>
           <Body sx={{ fontWeight: "600" }}>Reviews</Body>
-          <TextField
-            label="Add Review"
-            multiline
-            rows={2}
-            variant="standard"
-            value={review}
-            onChange={(event) => setReivew(event.target.value)}
-          />
-          <Rating
-            name="Rating"
-            value={rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-            }}
-          />
-          <Button
-            variant="contained"
-            sx={{
-              color: "#FFFFFF",
-            }}
-            disabled={review.trim() === "" || rating === null}
-            onClick={handleReviewsubmit}
-          >
-            Post
-          </Button>
-          {/* {props.content["reviews"].map((review, index) =>
+          {!user.isServiceProvider && (
+            <>
+              <TextField
+                label="Add Review"
+                multiline
+                rows={2}
+                variant="standard"
+                value={review}
+                onChange={(event) => setReview(event.target.value)}
+              />
+              <Rating
+                name="Rating"
+                value={rating}
+                onChange={(event, newValue) => {
+                  setRating(newValue);
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={{
+                  color: "#FFFFFF",
+                }}
+                disabled={review.trim() === "" || rating === null}
+                onClick={handleReviewSubmit}
+              >
+                Post
+              </Button>
+            </>
+          )}
+          {reviews.map((review, index) =>
             renderReview(review, index)
           )}
-          {props.content["reviews"].length === 0 && (
+          {reviews.length === 0 && (
             <Subtitle>No reviews yet</Subtitle>
-          )} */}
+          )}
         </Content>
       </Dialog>
     );

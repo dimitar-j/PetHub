@@ -140,6 +140,7 @@ const MyServices = () => {
       };
       axios.post("http://localhost:3001/create-casualservice", data).then((response) => {
         getMyCasualServices(user.user_id);
+        setOpenDialog(false);
       });
     } else if (addingService === "Veterinary") {
       const data = {
@@ -151,7 +152,8 @@ const MyServices = () => {
         issuer: newIssuer,
       };
       axios.post("http://localhost:3001/create-vet", data).then((response) => {
-        getMyVets(user.user_id)
+        getMyVets(user.user_id);
+        setOpenDialog(false);
       });
     } else if (addingService === "Animal") {
       const data = {
@@ -166,7 +168,8 @@ const MyServices = () => {
         image: newPhoto,
       };
       axios.post("http://localhost:3001/create-animal", data).then((response) => {
-        getMyAnimals(user.user_id)
+        getMyAnimals(user.user_id);
+        setOpenDialog(false);
       });
     }
   };

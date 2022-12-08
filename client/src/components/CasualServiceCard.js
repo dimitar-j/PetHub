@@ -90,6 +90,8 @@ const CasualServiceCard = (props) => {
     };
     axios.post("http://localhost:3001/create-review", data).then((response) => {
       getReviews(props.content.casualservice_id);
+      setReview("");
+      setRating(null);
     });
   };
 
@@ -100,7 +102,7 @@ const CasualServiceCard = (props) => {
       }
     }).then((response) => {
       setReviews(response.data);
-      setOverallRating(response.data.reduce((accumulator, currReview) => accumulator + parseInt(currReview.rating), 0));
+      setOverallRating((response.data.reduce((accumulator, currReview) => accumulator + parseInt(currReview.rating), 0) / response.data.length).toFixed(1));
     })
   };
 

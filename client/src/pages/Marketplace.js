@@ -160,7 +160,7 @@ const Marketplace = () => {
           </Button>
         </Header>
         <Table>
-          {items.map((item) => (
+          {items.slice(0).reverse().map((item) => (
             <ItemCard content={item}></ItemCard>
           ))}
         </Table>
