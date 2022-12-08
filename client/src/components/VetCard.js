@@ -92,7 +92,11 @@ const VetCard = (props) => {
       }
     }).then((response) => {
       setReviews(response.data);
-      setOverallRating((response.data.reduce((accumulator, currReview) => accumulator + parseInt(currReview.rating), 0) / response.data.length).toFixed(1));
+      if (response.data.length > 0){
+        setOverallRating((response.data.reduce((accumulator, currReview) => accumulator + parseInt(currReview.rating), 0) / response.data.length).toFixed(1));
+      } else {
+        setOverallRating(0);
+      }
     })
   };
 

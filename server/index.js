@@ -5,6 +5,8 @@ const cors = require("cors");
 const multer = require('multer');
 const path = require('path');
 const { profile } = require("console");
+var crypto = require('crypto')
+var shasum = crypto.createHash('sha1')
 
 app.use(cors());
 app.use(express.json());
@@ -21,7 +23,7 @@ const db = mysql.createConnection({
 app.post("/create-user", (req, res) => {
   db.query(
     "INSERT INTO users (username, password, fname, lname, birthday, address, profile_photo, location, isServiceProvider) VALUES (?,?,?,?,?,?,?,?,?)",
-    [req.body.userInfo.username, req.body.userInfo.password, req.body.userInfo.fname, req.body.userInfo.lname, req.body.userInfo.birthday, req.body.userInfo.address, req.body.userInfo.profile_photo, req.body.userInfo.location, req.body.userInfo.isServiceProvider],
+    [req.body.userInfo.username, crypto.createHash('sha1').update(req.body.userInfo.password).digest('hex'), req.body.userInfo.fname, req.body.userInfo.lname, req.body.userInfo.birthday, req.body.userInfo.address, req.body.userInfo.profile_photo, req.body.userInfo.location, req.body.userInfo.isServiceProvider],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -35,7 +37,7 @@ app.post("/create-user", (req, res) => {
 app.get("/login", (req, res) => {
   db.query(
     "SELECT * FROM users WHERE username = ? AND password = ?",
-    [req.query.email, req.query.password],
+    [req.query.email, crypto.createHash('sha1').update(req.query.password).digest('hex')],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -146,13 +148,23 @@ app.get("/get-animals", (req, res) => {
 
 app.post("/create-vet", (req, res) => {
   db.query(
-    "INSERT INTO vets (user_id, title, location, certLink, certExpDate, issuer) VALUES (?,?,?,?,?,?)",
-    [req.body.user_id, req.body.title, req.body.location, req.body.certLink, req.body.certExpDate, req.body.issuer],
-    (err, result) => {
+    "INSERT INTO certifications (certLink, certExpDate, issuer) VALUES (?,?,?)",
+    [req.body.certLink, req.body.certExpDate, req.body.issuer],
+    (err, result1) => {
       if (err) {
         console.log(err);
       } else {
-        res.send(result);
+        db.query(
+          "INSERT INTO vets (user_id, title, location, certification_id) VALUES (?,?,?,?)",
+          [req.body.user_id, req.body.title, req.body.location, result1.insertId],
+          (err, result2) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.send(result2);
+            }
+          }
+        );
       }
     }
   );
