@@ -5,6 +5,8 @@ import Dialog from "@mui/material/Dialog";
 import { useUserAuth } from "../context/UserContext";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import TextField from "@mui/material/TextField";
+
 
 const Container = styled("div")({
   boxShadow:
@@ -67,8 +69,20 @@ const Content = styled("div")({
   gap: "20px",
 });
 
+const Form = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+  padding: "0 20px 20px 20px",
+});
+
 const ItemCard = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [openEditingDialog, setEditingDialog] = useState(false);
+  const [newTitle, setNewTitle] = useState(props.content["title"]);
+  const [newDescription, setNewDescription] = useState(props.content['description']);
+  const [newPrice, setNewPrice] = useState(props.content['price']);
+  const [newCategory, setNewCategory] = useState(props.content['category']);
   const { user } = useUserAuth();
 
   const handleClick = () => {
@@ -84,8 +98,27 @@ const ItemCard = (props) => {
     });
   };
 
+  const updateMode = () => {
+    setEditingDialog(true);
+    setOpenDialog(false);
+  }
+
+  const handleEditBlog = () => {
+    const data = {
+      title: newTitle,
+      category: newCategory,
+      description: newDescription,
+      sellerEmail: user.username,
+      user_id: user.user_id,
+      price: newPrice,
+    };
+
+    console.log(data);
+  };
+
   const renderDialog = () => {
     return (
+      <>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>
           <Title>{props.content["title"]}</Title>
@@ -109,7 +142,62 @@ const ItemCard = (props) => {
           Delete Item
         </Button>
         )} 
+        <br/>
+        {parseInt(props.content["user_id"]) === user.user_id && (
+          <Button
+          variant="contained"
+          color="primary"
+          sx={{ color: "#ffffff" }}
+          onClick={updateMode}
+          >
+          Update Item
+        </Button>
+        )} 
       </Dialog>
+      <Dialog open={openEditingDialog} onClose={() => setEditingDialog(false)}>
+        <DialogTitle>
+          <Title>Editing</Title>
+        </DialogTitle>
+        <Form>
+          <TextField
+              label="Title"
+              value={newTitle}
+              onChange={(event) => setNewTitle(event.target.value)}
+            />
+            <TextField
+              label="Description"
+              multiline
+              value={newDescription}
+              onChange={(event) => setNewDescription(event.target.value)}
+            />
+            <TextField
+              type="number"
+              label="Price"
+              value={newPrice}
+              onChange={(event) => setNewPrice(event.target.value)}
+            />
+            <TextField
+              label="Category"
+              value={newCategory}
+              onChange={(event) => setNewCategory(event.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ color: "#ffffff" }}
+              onClick={handleEditBlog}
+              disabled={
+                newTitle.trim() === "" ||
+                newDescription.trim() === "" ||
+                newCategory.trim() === "" ||
+                newPrice < 1
+              }
+            >
+              Post Item
+            </Button>
+          </Form>
+      </Dialog>
+      </>
     );
   };
 
