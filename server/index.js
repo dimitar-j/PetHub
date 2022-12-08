@@ -352,7 +352,7 @@ app.get("/get-reviews", (req, res) => {
 
 app.post("/delete-item", (req, res) => {
   db.query(
-    "DELETE * FROM marketplace_items WHERE id = ?",
+    "DELETE FROM marketplace_items WHERE id = ?",
     [req.body.item_id],
     (err, result) => {
       if (err) {
@@ -380,7 +380,7 @@ app.post("/update-item", (req, res) => {
 
 app.post("/delete-blog", (req, res) => {
   db.query(
-    "DELETE * FROM blogs WHERE id = ?",
+    "DELETE FROM blogs WHERE blog_id = ?",
     [req.body.blog_id],
     (err, result) => {
       if (err) {
@@ -394,8 +394,8 @@ app.post("/delete-blog", (req, res) => {
 
 app.post("/update-blog", (req, res) => {
   db.query(
-    "UPDATE blog SET title = ?, content = ?, photo = ? WHERE blog_id = ?",
-    [req.body.title, req.body.content, req.body.photo],
+    "UPDATE blogs SET title = ?, content = ?, photo = ? WHERE blog_id = ?",
+    [req.body.title, req.body.content, req.body.photo, req.body.blog_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -404,7 +404,6 @@ app.post("/update-blog", (req, res) => {
       }
     }
   );
-
 });
 
 app.listen(3001, () => {

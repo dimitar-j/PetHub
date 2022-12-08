@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -50,6 +51,7 @@ const EditDeleteContainer = styled("div")({
 
 const BlogPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -96,15 +98,39 @@ const BlogPage = () => {
 
   const handleDelete = () => {
     // Delete blog API
-    console.log(location.state.blog_id);
+    const data = {
+      blog_id: location.state.blog_id,
+    };
+    console.log(data);
+    axios
+      .post("http://localhost:3001/delete-blog", data)
+      .then((response) => {
+        console.log(response);
+        navigate("/blogs");
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
   const handleEdit = () => {
     const data = {
-      newTitle,
-      newPhoto,
-      newBody,
+      title: newTitle,
+      photo: newPhoto,
+      content: newBody,
+      blog_id: location.state.blog_id,
     };
+    if (editing) {
+      axios
+        .post("http://localhost:3001/update-blog", data)
+        .then((response) => {
+          console.log(response);
+          navigate("/blogs");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
     setEditing(!editing);
     console.log(data);
   };
