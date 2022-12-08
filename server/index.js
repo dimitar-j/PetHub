@@ -50,8 +50,8 @@ app.get("/login", (req, res) => {
 
 app.post("/create-item", (req, res) => {
   db.query(
-    "INSERT INTO marketplace_items (title, category, description, sellerEmail, price) VALUES (?,?,?,?,?)",
-    [req.body.data.title, req.body.data.category, req.body.data.description, req.body.data.sellerEmail, req.body.data.price],
+    "INSERT INTO marketplace_items (title, category, description, sellerEmail, user_id, price) VALUES (?,?,?,?,?,?)",
+    [req.body.data.title, req.body.data.category, req.body.data.description, req.body.data.sellerEmail, req.body.data.user_id, req.body.data.price],
     (err, result) => {
       if (err) {
         console.log(err);

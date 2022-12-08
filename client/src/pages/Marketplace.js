@@ -62,6 +62,7 @@ const Marketplace = () => {
       category: newCategory,
       description: newDescription,
       sellerEmail: user.username,
+      user_id: user.user_id,
       price: newPrice,
     };
     console.log(data);
